@@ -26,5 +26,7 @@ jobs:
           python -m pip install --upgrade pip
 
       - name: Run Payment Processor
+        env:
+          PAYMENT_AMOUNT: 100  
         run: |
           python payment_processor.py

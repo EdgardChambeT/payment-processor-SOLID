@@ -1,4 +1,5 @@
 from abc import ABC, abstractmethod
+import os
 
 # Applying Dependency Inversion Principle (DIP)
 class PaymentMethod(ABC):
@@ -36,8 +37,22 @@ class PaymentProcessor:
             return
         self.payment_method.pay(amount)
 
-# Function to get a valid amount from the user
+# Function to get a valid amount from environment or user input
 def get_valid_amount():
+    env_amount = os.getenv("PAYMENT_AMOUNT")  # Read from environment variable
+
+    if env_amount:
+        try:
+            amount = float(env_amount)
+            if amount > 0:
+                print(f"✅ Amount received from environment: ${amount}")
+                return amount
+            else:
+                print("❌ The amount must be a positive number.")
+        except ValueError:
+            print("❌ Invalid environment input. Please enter a valid number.")
+
+    # Fallback to interactive input
     while True:
         try:
             amount = float(input("Enter the amount to pay: $"))
