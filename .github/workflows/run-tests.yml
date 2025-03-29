@@ -28,5 +28,6 @@ jobs:
       - name: Run Payment Processor
         env:
           PAYMENT_AMOUNT: 100  
+          PAYMENT_METHOD: 1    # 1 = Credit Card, 2 = PayPal, 3 = Crypto
         run: |
           python payment_processor.py

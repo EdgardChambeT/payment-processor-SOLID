@@ -37,7 +37,7 @@ class PaymentProcessor:
             return
         self.payment_method.pay(amount)
 
-# Function to get a valid amount from environment or user input
+# Function to get a valid amount
 def get_valid_amount():
     env_amount = os.getenv("PAYMENT_AMOUNT")  # Read from environment variable
 
@@ -52,7 +52,6 @@ def get_valid_amount():
         except ValueError:
             print("❌ Invalid environment input. Please enter a valid number.")
 
-    # Fallback to interactive input
     while True:
         try:
             amount = float(input("Enter the amount to pay: $"))
@@ -63,8 +62,21 @@ def get_valid_amount():
         except ValueError:
             print("❌ Invalid input. Please enter a valid number.")
 
-# Dynamic method selection
+# Dynamic method selection using environment variable
 def select_payment_method():
+    env_method = os.getenv("PAYMENT_METHOD")  # Read from environment variable
+
+    if env_method:
+        if env_method == "1":
+            return CreditCardPayment()
+        elif env_method == "2":
+            return PayPalPayment()
+        elif env_method == "3":
+            return CryptoPayment()
+        else:
+            print("❌ Invalid PAYMENT_METHOD environment variable.")
+            exit(1)
+
     print("\nSelect a payment method:")
     print("1. Credit Card")
     print("2. PayPal")
